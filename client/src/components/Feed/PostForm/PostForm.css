@@ -1,0 +1,32 @@
+.feed-box {
+    padding: 2% 3%;
+    border: 1px solid;
+    border-radius: 7px;
+    margin: 2% auto;
+}
+
+.post__form-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post__form-textarea {
+    text-align: center;
+    margin: 1% auto;
+}
+
+.post__form-textarea textarea{
+    resize: none;
+    height: 150px;
+    width: 90%;
+    font-size: 1.3em;
+    padding: 1%;
+}
+
+.post__form-bottom {
+    text-align: end;
+}
+
+.post__form-bottom span{
+    margin: 1%;
+}
