@@ -1,0 +1,22 @@
+.nav-wrapper{
+    z-index: 100;
+    display: flex;
+    padding: 15px 20px;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    box-shadow: 0px 5px 8px -9px rgb(0 0 0 / 75%);
+}
+
+.nav-logo-span{
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.nav-right, .nav-user__info{
+    display: flex;
+}
+
+.nav-user__name{
+    margin: 0.8em 0.2em;
+}
