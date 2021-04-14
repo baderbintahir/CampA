@@ -3,3 +3,15 @@
     padding: 1%;
     margin: 1% 0;
 }
+
+.post__top-bar{
+    display: flex;
+    justify-content: space-between;
+}
+
+.post__opt-btn{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+}

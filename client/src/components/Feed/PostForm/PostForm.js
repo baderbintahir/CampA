@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import FileBase from 'react-file-base64'
+import { useDispatch, useSelector } from 'react-redux'
 
 import './PostForm.css'
 import User from '../../User/User.js'
+import { createPost, updatePost } from '../../../actions/posts.js'
 
-const PostForm = () => {
+const PostForm = ({ currentId, setCurrentId }) => {
     const [postData, setPostData] = useState({
         title: '',
         user_id: '',
@@ -13,8 +15,35 @@ const PostForm = () => {
         tags: '',
         selectedFile: ''
     })
+    const post = useSelector((state) => currentId ? state.posts.find((post) => post._id === currentId) : null)
+    const dispatch = useDispatch()
 
-    const handleSubmit = () => {
+    useEffect(() => {
+        if(post) setPostData(post)
+    }, [post])
+
+    const clear = () => {
+        setCurrentId(0)
+        setPostData({
+            title: '',
+            user_id: '',
+            post_id: '',
+            message: '',
+            tags: '',
+            selectedFile: ''
+        })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        if(currentId){            
+            dispatch(updatePost(currentId, postData))
+        } else{            
+            dispatch(createPost(postData))
+        }
+
+        clear()
 
     }
 
@@ -36,7 +65,7 @@ const PostForm = () => {
                     <FileBase 
                         type="file"
                         multiple={false}
-                        onDone={({base64}) => setPostData({...setPostData, selectedFile: base64})}
+                        onDone={({base64}) => setPostData({...postData, selectedFile: base64})}
                     />
                     <button className="post__form-publish__btn" type="submit">Publish</button>
                 </div>
