@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit';
 import './Post.css'
-import User from '../../../User/User.js'
+import User from '../../../../User/User.js'
 import moment from 'moment'
 
-import { deletePost } from '../../../../actions/posts.js'
+import { deletePost } from '../../../../../actions/posts'
 
 const Post = ({ post, setCurrentId }) => {
     const dispatch = useDispatch()

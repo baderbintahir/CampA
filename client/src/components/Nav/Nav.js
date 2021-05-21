@@ -1,16 +1,26 @@
 import React from 'react'
+import { useHistory } from "react-router-dom";
 import { IconButton } from '@material-ui/core'
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive'
 import User from '../User/User.js'
+import NavOptions from './NavOptions/NavOptions.js'
 import './Nav.css'
 
 const Nav = () => {
+    const history = useHistory()
+
+    const handleClick = () => {
+        history.push('/')
+    }
     
     return(
         <div className="nav-wrapper">
             <div className="nav-left">
                 <div className="nav-logo">
-                    <span className="nav-logo-span">CampA</span>
+                    <span 
+                        className="nav-logo-span"
+                        onClick={handleClick}
+                    >CampA</span>
                 </div>
             </div>
 
@@ -19,6 +29,10 @@ const Nav = () => {
 
                 <IconButton>
                     <NotificationsActiveIcon />
+                </IconButton>
+
+                <IconButton>
+                    <NavOptions />
                 </IconButton>
 
             </div>

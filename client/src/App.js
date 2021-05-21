@@ -1,21 +1,27 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react'
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import { getPosts } from './actions/posts.js'
-import Nav from './components/Nav/Nav.js'
-import Feed from './components/Feed/Feed.js'
+import Login from './components/Login/Login.js'
+import Home from './components/Home/Home.js'
+import DataPage from './components/DataPage/DataPage.js'
 
 const App = () => {
-    const dispatch = useDispatch()
+    let [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')))
 
-    useEffect(() => {
-        dispatch(getPosts())
-    }, [dispatch])
+    if (user) {
+        return (
+            <Login />
+        )
+    }
 
-    return(
+    return (
         <div className="app">
-            <Nav />
-            <Feed />
+            <BrowserRouter>
+                <Switch>
+                    <Route path="/" exact component={Home} />
+                    <Route path="/users" exact component={DataPage} />
+                </Switch>
+            </BrowserRouter>
         </div>
     )
 }

@@ -3,8 +3,8 @@ import FileBase from 'react-file-base64'
 import { useDispatch, useSelector } from 'react-redux'
 
 import './PostForm.css'
-import User from '../../User/User.js'
-import { createPost, updatePost } from '../../../actions/posts.js'
+import User from '../../../User/User.js'
+import { createPost, updatePost } from '../../../../actions/posts.js'
 
 const PostForm = ({ currentId, setCurrentId }) => {
     const [postData, setPostData] = useState({
