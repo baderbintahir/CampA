@@ -17,7 +17,7 @@ export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updated
 export const deletePost = (id) => API.delete(`/posts/${id}`);
 
 // Users
-export const login = (formData) => API.post('/user/login', formData);
+export const login = (formData) => API.post('/users/login', formData);
 export const fetchUsers = () => API.get('/users');
 export const createUser = (newUser) => API.post('/users', newUser);
 export const updateUser = (id, updatedUser) => API.patch(`/users/${id}`, updatedUser);

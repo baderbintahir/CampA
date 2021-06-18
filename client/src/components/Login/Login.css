@@ -6,7 +6,7 @@
     align-items: center;
 }
 
-input[type="text"], input[type="password"] {
+#username, #password {
     margin: 2% 0;
     padding: 2%;
     font-size: 1em;
