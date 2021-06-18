@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
     cnic: { type: String, required: true },
     phoneNumber: { type: String, required: true },
     designation: { type: String, required: true },
-    roles: { type: Object, required: true },
+    roles: { type: String, required: true },
 })
 
 const User = mongoose.model('User', userSchema)

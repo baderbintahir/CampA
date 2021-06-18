@@ -1,4 +1,4 @@
-
+import mongoose from 'mongoose'
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -27,7 +27,7 @@ export const login = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-    const { name, username, password, email, cnic, phoneNumber, generalRole } = req.body;
+    const { name, username, password, email, cnic, phoneNumber, designation, roles } = req.body;
 
     try {
         const oldUser = await User.findOne({ username });
@@ -36,7 +36,7 @@ export const createUser = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        const result = await UserModal.create({ name, username, password: hashedPassword, email, cnic, phoneNumber, generalRole });
+        const result = await User.create({ name, username, password: hashedPassword, email, cnic, phoneNumber, designation, roles });
 
         res.status(201).json({ result });
     } catch (error) {

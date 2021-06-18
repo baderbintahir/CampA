@@ -3,7 +3,7 @@
     display: flex;
     padding: 15px 20px;
     justify-content: space-between;
-    position: sticky;
+    /* position: sticky; */
     top: 0;
     box-shadow: 0px 5px 8px -9px rgb(0 0 0 / 75%);
 }

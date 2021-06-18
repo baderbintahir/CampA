@@ -11,7 +11,6 @@ const DataPage = () => {
             <Nav />
             <div className="data-page__header">
                 <h1 className="data-page__heading">Users</h1>
-                <button className="create-user__btn">Create User</button>
             </div>
             <CustomizedTable />
         </div>
