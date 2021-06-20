@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import './CustomizedTable.css';
-import { forwardRef } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 import { createUser, getUsers, deleteUser, updateUser } from '../../../actions/users.js'
+import { createSociety, getSocieties, deleteSociety, updateSociety } from '../../../actions/societies.js'
 
 import { Avatar } from '@material-ui/core'
-
 import MaterialTable from "material-table";
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -24,6 +22,8 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Alert from '@material-ui/lab/Alert';
+
+import './CustomizedTable.css';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -46,92 +46,116 @@ const tableIcons = {
 };
 
 
-function validateEmail(email) {
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
-
-function CustomizedTable() {
-  const users = useSelector((state) => state.users)
-  const usersData = users.map((user) => { return { ...user, password: '********' } })
-
+const CustomizedTable = (props) => {
   const dispatch = useDispatch()
+  var actions, columns, data;
 
-  var columns = [
-    { title: "id", field: "id", hidden: true },
-    { title: "Avatar", render: rowData => <Avatar /> },
-    { title: "Name", field: "name" },
-    { title: "Username", field: "username" },
-    { title: "Password", field: "password" },
-    { title: "Email", field: "email" },
-    { title: "CNIC", field: "cnic" },
-    { title: "Phone No.", field: "phoneNumber" },
-    { title: "Designation", field: "designation" },
-    { title: "Roles", field: "roles" },
-  ]
+  useEffect(() => {
+    console.log("not useEffect")
+    dispatch(actions.getEntities())
+  }, [dispatch, props.mode, actions])
+
+  const entities = useSelector((state) => state[props.mode])
+
+
+  if (props.mode === "users") {
+    actions = {
+      getEntities: getUsers,
+      createEntity: createUser,
+      updateEntity: updateUser,
+      deleteEntity: deleteUser
+    }
+
+    columns = [
+      { title: "id", field: "id", hidden: true },
+      { title: "Avatar", render: rowData => <Avatar /> },
+      { title: "Name", field: "name" },
+      { title: "Username", field: "username" },
+      { title: "Password", field: "password" },
+      { title: "Email", field: "email" },
+      { title: "CNIC", field: "cnic" },
+      { title: "Phone No.", field: "phoneNumber" },
+      { title: "Designation", field: "designation" },
+      { title: "Roles", field: "roles" },
+    ]
+    
+    data = entities.map((entity) => { return { ...entity, password: '********' } })
+
+  } else if(props.mode === "societies"){
+    actions = {
+      getEntities: getSocieties,
+      createEntity: createSociety,
+      updateEntity: updateSociety,
+      deleteEntity: deleteSociety
+    }
+
+    columns = [
+      { title: "id", field: "id", hidden: true },
+      { title: "Avatar", render: rowData => <Avatar /> },
+      { title: "Name", field: "username" },
+      { title: "Email", field: "email" },
+      { title: "Admin", field: "admin" },
+      { title: "Admin Username", field: "adminUsername" },
+      { title: "President", field: "president" },
+      { title: "President Username", field: "presidentUsername" },
+      { title: "Role", field: "role" },
+      { title: "Since", field: "since" },
+    ]
+
+    data = entities
+  }
 
   //for error handling
   const [iserror, setIserror] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
 
-  useEffect(() => {
-    dispatch(getUsers())
-  }, [dispatch])
 
   const validations = (newData, resolve, mode) => {
     //validation
     let errorList = []
 
-    if(mode === "new"){
-      let userExists = false
-      for (let i = 0; i < usersData.length; i++) {
-        if(usersData[i].username === newData.username){
-          userExists = true
+    // Checks if user already exists
+    if (mode === "new") {
+      let entityExists = false
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].username === newData.username) {
+          entityExists = true
           break
-        }      
+        }
       }
-      if(userExists){
-        errorList.push("User already exists")
+      if (entityExists) {
+        errorList.push("Entity already exists")
       }
     }
 
-    function checkProperties(usersData) {
-      for (let key in usersData) {
-        if (!usersData[key])
-          return false;
+    // Checks any field is empty
+    function isEmpty(newData) {
+      if (Object.keys(newData).length > columns.length - 3) {
+        for (let key in newData) {
+          if (!newData[key]) {
+            return true;
+          }
+        }
+        return false;
+      } else {
+        return true;
       }
-      return true;
     }
 
-    if(!checkProperties(usersData)){
+    if (isEmpty(newData)) {
       errorList.push("Please fill all fields")
     }
 
-    // if (!newData.name) {
-    //   errorList.push("Please enter name")
-    // }
-    // if (!newData.username) {
-    //   errorList.push("Please enter username")
-    // }
-    // if (!newData.password) {
-    //   errorList.push("Please enter password")
-    // }
-    // if (!newData.email || validateEmail(newData.email) === false) {
-    //   errorList.push("Please enter a valid email")
-    // }
-    // if (!newData.cnic) {
-    //   errorList.push("Please enter cnic")
-    // }
-    // if (!newData.phoneNumber) {
-    //   errorList.push("Please enter phone number")
-    // }
-    // if (!newData.designation) {
-    //   errorList.push("Please enter designation")
-    // }
-    // if (!newData.roles) {
-    //   errorList.push("Please enter roles")
-    // }
-    
+    // validates the email address
+    function validateEmail(email) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    if (!validateEmail(newData.email)) {
+      errorList.push("Please enter a valid email address")
+    }
+
     if (errorList.length < 1) {
       return true;
     } else {
@@ -143,9 +167,10 @@ function CustomizedTable() {
   }
 
   const handleRowUpdate = (newData, oldData, resolve) => {
-    let noError = validations(newData, resolve, "update")
+    const fields = { ...newData, __v: true }
+    let noError = validations(fields, resolve, "update")
     if (noError) { //no error
-      dispatch(updateUser(oldData._id, newData))
+      dispatch(actions.updateEntity(oldData._id, newData))
       resolve()
       setIserror(false)
       setErrorMessages([])
@@ -155,7 +180,7 @@ function CustomizedTable() {
   const handleRowAdd = (newData, resolve) => {
     let noError = validations(newData, resolve, "new")
     if (noError) { //no error
-      // dispatch(createUser(newData))
+      dispatch(actions.createEntity(newData))
       resolve()
       setErrorMessages([])
       setIserror(false)
@@ -164,7 +189,7 @@ function CustomizedTable() {
   }
 
   const handleRowDelete = (oldData, resolve) => {
-    dispatch(deleteUser(oldData._id))
+    dispatch(actions.deleteEntity(oldData._id))
     resolve()
   }
 
@@ -183,7 +208,7 @@ function CustomizedTable() {
       <MaterialTable
         title=""
         columns={columns}
-        data={usersData}
+        data={data}
         icons={tableIcons}
         editable={{
           onRowUpdate: (newData, oldData) =>
