@@ -22,3 +22,9 @@ export const fetchUsers = () => API.get('/users');
 export const createUser = (newUser) => API.post('/users', newUser);
 export const updateUser = (id, updatedUser) => API.patch(`/users/${id}`, updatedUser);
 export const deleteUser = (id) => API.delete(`/users/${id}`);
+
+// Societies
+export const fetchSocieties = () => API.get('/societies');
+export const createSociety = (newSociety) => API.post('/societies', newSociety);
+export const updateSociety = (id, updatedSociety) => API.patch(`/societies/${id}`, updatedSociety);
+export const deleteSociety = (id) => API.delete(`/societies/${id}`);

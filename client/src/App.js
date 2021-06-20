@@ -20,6 +20,7 @@ const App = () => {
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/users" exact component={DataPage} />
+                    <Route path="/societies" exact component={DataPage} />
                 </Switch>
             </BrowserRouter>
         </div>
