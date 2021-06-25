@@ -1,26 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Login from './components/Login/Login.js'
 import Home from './components/Home/Home.js'
 import DataPage from './components/DataPage/DataPage.js'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.js'
 
 const App = () => {
-    let [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')))
-
-    if (user) {
-        return (
-            <Login />
-        )
-    }
 
     return (
         <div className="app">
             <BrowserRouter>
                 <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route path="/users" exact component={DataPage} />
-                    <Route path="/societies" exact component={DataPage} />
+                    <Route path="/login" exact component={Login} />
+                    <ProtectedRoute path="/" exact component={Home} />
+                    <ProtectedRoute path="/users" exact component={DataPage} />
+                    <ProtectedRoute path="/societies" exact component={DataPage} />
+                    <Route path="*" component={() => "404 PAGE NOT FOUND"} />
                 </Switch>
             </BrowserRouter>
         </div>

@@ -14,7 +14,7 @@
     width: 100%;
 }
 
-button[type="submit"]{
+.login-form button[type="submit"]{
     width: 100px;
     background: black;
     border: none;
