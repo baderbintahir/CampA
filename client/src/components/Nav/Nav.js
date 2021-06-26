@@ -7,6 +7,7 @@ import NavOptions from './NavOptions/NavOptions.js'
 import './Nav.css'
 
 const Nav = () => {
+    const user = JSON.parse(localStorage.getItem('profile'))
     const history = useHistory()
 
     const handleClick = () => {
@@ -25,7 +26,7 @@ const Nav = () => {
             </div>
 
             <div className="nav-right">
-                <User username="Bader" />
+                <User username={user.result.name} />
 
                 <IconButton>
                     <NotificationsActiveIcon />

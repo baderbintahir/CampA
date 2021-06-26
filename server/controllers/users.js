@@ -11,18 +11,19 @@ export const login = async (req, res) => {
 
     try {
         const oldUser = await User.findOne({ username });
-
+        
         if (!oldUser) return res.status(404).json({ message: "User doesn't exist" });
 
         const isPasswordCorrect = await bcrypt.compare(password, oldUser.password);
-
+        
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
-
+        
         const token = jwt.sign({ username: oldUser.username, id: oldUser._id }, secret, { expiresIn: "1h" });
-
+        
         res.status(200).json({ result: oldUser, token });
     } catch (err) {
         res.status(500).json({ message: "Something went wrong" });
+        console.log(err)
     }
 };
 
@@ -64,7 +65,9 @@ export const updateUser = async (req, res) => {
 
     if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No user with that id')
 
-    const updatedUser = await User.findByIdAndUpdate(_id, { ...user, _id }, { new: true })
+    const hashedPassword = await bcrypt.hash(user.password, 12);
+
+    const updatedUser = await User.findByIdAndUpdate(_id, { ...user, password: hashedPassword, _id }, { new: true })
 
     res.json(updatedUser)
 }

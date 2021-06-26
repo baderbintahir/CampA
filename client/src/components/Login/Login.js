@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom';
 import './Login.css'
 
 import { login } from '../../actions/auth'
@@ -8,13 +9,13 @@ const initialState = { username: '', password: '' }
 
 const Login = () => {
     const dispatch = useDispatch()
+    const history = useHistory();
     const [formData, setFormData] = useState(initialState)
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
-        localStorage.setItem('profile', 'testUser')
-        dispatch(login(formData))
+        
+        dispatch(login(formData, history))
     }
 
     const handleChange = (e) => {

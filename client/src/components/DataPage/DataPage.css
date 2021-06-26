@@ -1,5 +1,6 @@
 .data-page__heading{
     text-align: center;
+    text-transform: capitalize;
 }
 
 .data-page__header {

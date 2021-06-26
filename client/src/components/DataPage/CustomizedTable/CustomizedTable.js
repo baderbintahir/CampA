@@ -51,7 +51,6 @@ const CustomizedTable = (props) => {
   var actions, columns, data;
 
   useEffect(() => {
-    console.log("not useEffect")
     dispatch(actions.getEntities())
   }, [dispatch, props.mode, actions])
 
@@ -68,7 +67,7 @@ const CustomizedTable = (props) => {
 
     columns = [
       { title: "id", field: "id", hidden: true },
-      { title: "Avatar", render: rowData => <Avatar /> },
+      { title: "Avatar", render: rowData => <Avatar>{rowData.name.charAt(0)}</Avatar> },
       { title: "Name", field: "name" },
       { title: "Username", field: "username" },
       { title: "Password", field: "password" },
@@ -91,7 +90,7 @@ const CustomizedTable = (props) => {
 
     columns = [
       { title: "id", field: "id", hidden: true },
-      { title: "Avatar", render: rowData => <Avatar /> },
+      { title: "Avatar", render: rowData => <Avatar>{rowData.username.charAt(0)}</Avatar> },
       { title: "Name", field: "username" },
       { title: "Email", field: "email" },
       { title: "Admin", field: "admin" },

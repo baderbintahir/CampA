@@ -15,3 +15,11 @@
     cursor: pointer;
     margin-left: 5px;
 }
+
+.post__img-container {
+    text-align: center;
+}
+
+.post-img{
+    width: 500px;
+}

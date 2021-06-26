@@ -4,6 +4,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { useDispatch } from 'react-redux'
+import { isAdmin } from '../../../privileges.js'
+
+import { logout } from "../../../actions/auth.js"
 
 const StyledMenu = ((props) => (
     <Menu
@@ -24,14 +28,15 @@ const StyledMenu = ((props) => (
 const NavOptions = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
+    const dispatch = useDispatch()
     const history = useHistory()
 
     const navigationHandleClick = (event) => {
         history.push(`/${event.target.innerText.toLowerCase()}`);
     }
 
-    const logout = () => {
-        console.log('Log Out')
+    const logoutHandle = () => {
+        dispatch(logout(history))
     }
 
     const handleClick = (event) => {
@@ -54,21 +59,27 @@ const NavOptions = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem
-                    onClick={navigationHandleClick}
-                >
-                    <ListItemText primary="Users" />
-                </MenuItem>
-                <MenuItem
-                    onClick={navigationHandleClick}
-                >
-                    <ListItemText primary="Societies" />
-                </MenuItem>
+                {
+                    isAdmin() ? (
+                        <div>
+                            <MenuItem
+                                onClick={navigationHandleClick}
+                            >
+                                <ListItemText primary="Users" />
+                            </MenuItem>
+                            <MenuItem
+                                onClick={navigationHandleClick}
+                            >
+                                <ListItemText primary="Societies" />
+                            </MenuItem>
+                        </div>
+                    ) : null
+                }
 
                 <hr />
 
                 <MenuItem
-                    onClick={logout}
+                    onClick={logoutHandle}
                 >
                     <ListItemText primary="Log Out" />
                 </MenuItem>
