@@ -21,6 +21,8 @@ export const login = (formData) => API.post('/users/login', formData);
 export const fetchUsers = () => API.get('/users');
 export const createUser = (newUser) => API.post('/users', newUser);
 export const updateUser = (id, updatedUser) => API.patch(`/users/${id}`, updatedUser);
+export const updateUserRoles = (username, role) => API.patch(`/users/pushRole/${username}`, role);
+export const deleteUserRoles = (username, role) => API.patch(`/users/deleteRole/${username}`, role);
 export const deleteUser = (id) => API.delete(`/users/${id}`);
 
 // Societies
