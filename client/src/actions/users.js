@@ -1,4 +1,4 @@
-import { FETCH_ALL_USERS, CREATE_USER, UPDATE_USER, DELETE_USER } from '../constants/actionTypes.js'
+import { FETCH_ALL_USERS, CREATE_USER, UPDATE_USER, UPDATE_USER_ROLES, DELETE_USER, DELETE_USER_ROLES } from '../constants/actionTypes.js'
 import * as api from '../api'
 
 // Action Creators
@@ -33,11 +33,31 @@ export const updateUser = (id, user) => async (dispatch) => {
     }
 }
 
+export const updateUserRoles = (username, role) => async (dispatch) => {
+    try {
+        const { data } = await api.updateUserRoles(username, role)
+
+        dispatch({type: UPDATE_USER_ROLES, payload: data})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const deleteUser = (id) => async (dispatch) => {
     try {
         await api.deleteUser(id)
         
         dispatch({type: DELETE_USER, payload: id})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const deleteUserRoles = (username, role) => async (dispatch) => {
+    try {
+        const { data } = await api.deleteUserRoles(username, role)
+
+        dispatch({type: DELETE_USER_ROLES, payload: data})
     } catch (error) {
         console.log(error)
     }
