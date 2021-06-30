@@ -7,11 +7,13 @@ const users = (users = [], action) => {
         case CREATE_USER:
             return [...users, action.payload];
         case UPDATE_USER:
-        case UPDATE_USER_ROLES:
             return users.map((user) => user._id === action.payload._id ? action.payload : user)
+        case UPDATE_USER_ROLES:
+            return action.payload
         case DELETE_USER:
-        case DELETE_USER_ROLES:
             return users.filter((user) => user._id !== action.payload)
+        case DELETE_USER_ROLES:
+            return action.payload
         default:
             return users;
     }

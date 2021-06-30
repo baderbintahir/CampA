@@ -35,8 +35,6 @@ const Users = (props) => {
         { title: "Designation", field: "designation" },
     ]
 
-    
-
     const handleRowUpdate = (newData, oldData, resolve, validations, setIserror, setErrorMessages) => {
         const fields = { ...newData, __v: true }
         let noError = validations(fields, resolve, "update")

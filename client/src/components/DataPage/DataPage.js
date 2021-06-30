@@ -47,59 +47,61 @@ const DataPage = (props) => {
     const [errorMessages, setErrorMessages] = useState([])
 
     const validations = (newData, resolve, mode) => {
-        //validation
-        let errorList = []
-
-        // Checks if user already exists
-        if (mode === "new") {
-            let entityExists = false
-            for (let i = 0; i < props.data.length; i++) {
-                if (props.data[i].username === newData.username) {
-                    entityExists = true
-                    break
-                }
-            }
-            if (entityExists) {
-                errorList.push("Entity already exists")
-            }
-        }
-
-        // Checks any field is empty
-        function isEmpty(newData) {
-            if (Object.keys(newData).length > props.columns.length - 3) {
-                for (let key in newData) {
-                    if (!newData[key]) {
-                        return true;
+        if(mode !== "no validation"){
+            //validation
+            let errorList = []
+    
+            // Checks if user already exists
+            if (mode === "new") {
+                let entityExists = false
+                for (let i = 0; i < props.data.length; i++) {
+                    if (props.data[i].username === newData.username) {
+                        entityExists = true
+                        break
                     }
                 }
-                return false;
-            } else {
+                if (entityExists) {
+                    errorList.push("Entity already exists")
+                }
+            }
+    
+            // Checks any field is empty
+            function isEmpty(newData) {
+                if (Object.keys(newData).length > props.columns.length - 3) {
+                    for (let key in newData) {
+                        if (!newData[key]) {
+                            return true;
+                        }
+                    }
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+    
+            if (isEmpty(newData)) {
+                errorList.push("Please fill all fields")
+            }
+    
+            // validates the email address
+            function validateEmail(email) {
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+    
+            if (newData.email) {
+                if (!validateEmail(newData.email)) {
+                    errorList.push("Please enter a valid email address")
+                }
+            }
+    
+            if (errorList.length < 1) {
                 return true;
+            } else {
+                setErrorMessages(errorList)
+                setIserror(true)
+                resolve()
             }
-        }
-
-        if (isEmpty(newData)) {
-            errorList.push("Please fill all fields")
-        }
-
-        // validates the email address
-        function validateEmail(email) {
-            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(String(email).toLowerCase());
-        }
-
-        if (newData.email) {
-            if (!validateEmail(newData.email)) {
-                errorList.push("Please enter a valid email address")
-            }
-        }
-
-        if (errorList.length < 1) {
-            return true;
-        } else {
-            setErrorMessages(errorList)
-            setIserror(true)
-            resolve()
         }
     }
 

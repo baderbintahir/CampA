@@ -1,84 +1,60 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { createSociety, getSocieties, deleteSociety, updateSociety } from '../../actions/societies.js'
-import { updateUserRoles, deleteUserRoles } from '../../actions/users.js'
+import { updateUserRoles, deleteUserRoles, getUsers } from '../../actions/users.js'
 
 import DataPage from '../DataPage/DataPage.js'
 import { Avatar } from '@material-ui/core'
+import { useParams } from 'react-router';
 
-const Society = (props) => {
-    let mode = props.location.pathname.substring(1)
-
+const Society = () => {
     const dispatch = useDispatch()
 
+    let societyName = useParams().id
+
     useEffect(() => {
-        dispatch(getSocieties())
+        dispatch(getUsers())
     }, [dispatch])
 
-    const data = useSelector((state) => state.societies)
+    const allUsers = useSelector((state) => state.users)
+    let members = [];
+
+    allUsers.forEach(user => {
+        if(user.roles.includes(`${societyName} Member`)){
+            members.push(user)
+        }
+    });
+
 
     const columns = [
         { title: "id", field: "id", hidden: true },
-        { title: "Avatar", render: rowData => <Avatar>{rowData.username.charAt(0)}</Avatar> },
-        { title: "Name", field: "username" },
-        { title: "Email", field: "email" },
-        { title: "Admin", field: "admin" },
-        { title: "President", field: "president" },
-        { title: "Vice President", field: "vicePresident" },
-        { title: "Role", field: "role" },
+        { title: "Avatar", render: rowData => <Avatar>{rowData.name.charAt(0)}</Avatar> },
+        { title: "Name", field: "name", editable: 'never' },
+        { title: "Username", field: "username", editable: 'onAdd' },
+        { title: "Email", field: "email", editable: 'never' },
+        { title: "CNIC", field: "cnic", editable: 'never' },
+        { title: "Phone No.", field: "phoneNumber", editable: 'never' },
+        { title: "Designation", field: "designation", editable: 'never' },
     ]
 
-    const handleRowUpdate = (newData, oldData, resolve, validations, setIserror, setErrorMessages) => {
-        const fields = { ...newData, __v: true }
-        let noError = validations(fields, resolve, "update")
-
-        if (noError) { //no error
-            dispatch(updateSociety(oldData._id, newData))
-            dispatch(updateUserRoles(newData.admin, {
-                role: `${newData.username} Admin`,
-                oldUsername: oldData.admin
-            }))
-            dispatch(updateUserRoles(newData.president, {
-                role: `${newData.username} President`,
-                oldUsername: oldData.president
-            }))
-            dispatch(updateUserRoles(newData.vicePresident, {
-                role: `${newData.username} vicePresident`,
-                oldUsername: oldData.vicePresident
-            }))
-
-            resolve()
-            setIserror(false)
-            setErrorMessages([])
-        }
+    const handleRowUpdate = (resolve, setIserror, setErrorMessages) => {
+        
+        resolve()
+        setIserror(false)
+        setErrorMessages([])
     }
 
-    const handleRowAdd = (newData, resolve, validations, setIserror, setErrorMessages) => {
-        let noError = validations(newData, resolve, "new")
-
-        if (noError) { //no error
-            dispatch(createSociety(newData))
-            dispatch(updateUserRoles(newData.admin, { role: `${newData.username} Admin` }))
-            dispatch(updateUserRoles(newData.president, { role: `${newData.username} President` }))
-            dispatch(updateUserRoles(newData.vicePresident, { role: `${newData.username} vicePresident` }))
-
-            resolve()
-            setErrorMessages([])
-            setIserror(false)
-
-        }
+    const handleRowAdd = (newData, resolve, validation,setIserror, setErrorMessages) => {
+        validation(newData, resolve, 'no validation')
+        dispatch(updateUserRoles(newData.username, { role: `${societyName} Member` }))
+        
+        resolve()
+        setErrorMessages([])
+        setIserror(false)
     }
 
     const handleRowDelete = (oldData, resolve) => {
-        dispatch(deleteSociety(oldData._id))
-        dispatch(deleteUserRoles(oldData.admin, {
-            role: `${oldData.username} Admin`
-        }))
-        dispatch(deleteUserRoles(oldData.president, {
-            role: `${oldData.username} President`
-        }))
-        dispatch(deleteUserRoles(oldData.vicePresident, {
-            role: `${oldData.username} vicePresident`
+        dispatch(deleteUserRoles(oldData.username, {
+            role: `${societyName} Member`
         }))
 
         resolve()
@@ -86,8 +62,8 @@ const Society = (props) => {
 
     return (
         <DataPage
-            mode={mode}
-            data={data}
+            mode={`${societyName} Members`}
+            data={members}
             columns={columns}
             handleRowAdd={handleRowAdd}
             handleRowUpdate={handleRowUpdate}

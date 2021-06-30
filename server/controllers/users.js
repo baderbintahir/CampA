@@ -105,9 +105,11 @@ export const updateUserRoles = async (req, res) => {
         let roles = user.roles.push(role)
         let _id = user._id
 
-        const updatedUser = await User.findByIdAndUpdate(_id, { ...user, roles: roles, _id }, { new: true })
+        await User.findByIdAndUpdate(_id, { ...user, roles: roles, _id }, { new: true })
 
-        res.json(updatedUser)
+        const users = await User.find()
+
+        res.status(200).json(users)
     } else {
         res.json({ message: "User already have this role!" })
     }
@@ -116,9 +118,9 @@ export const updateUserRoles = async (req, res) => {
 export const deleteUserRoles = async (req, res) => {
     const { username } = req.params
     const { role } = req.body
-    
+
     let oldUser = await User.findOne({ username: username })
-    
+
     if (oldUser.roles.includes(role)) {
         const index = oldUser.roles.indexOf(role);
         if (index > -1) {
@@ -126,7 +128,9 @@ export const deleteUserRoles = async (req, res) => {
         }
     }
 
-    const updatedUser = await User.findByIdAndUpdate(oldUser._id, oldUser, { new: true })
+    await User.findByIdAndUpdate(oldUser._id, oldUser, { new: true })
 
-    res.json(updatedUser)
+    const users = await User.find()
+
+    res.status(200).json(users)
 }

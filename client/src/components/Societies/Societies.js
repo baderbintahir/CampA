@@ -6,6 +6,8 @@ import { updateUserRoles, deleteUserRoles } from '../../actions/users.js'
 import DataPage from '../DataPage/DataPage.js'
 import { Avatar } from '@material-ui/core'
 
+import './Societies.css'
+
 const Societies = (props) => {
     let mode = props.location.pathname.substring(1)
 
@@ -20,7 +22,7 @@ const Societies = (props) => {
     const columns = [
         { title: "id", field: "id", hidden: true },
         { title: "Avatar", render: rowData => <Avatar>{rowData.username.charAt(0)}</Avatar> },
-        { title: "Name", field: "username" },
+        { title: "Name", field: "username", render: rowData => <a href={`/societies/${rowData.username}`} className="society-link" >{rowData.username}</a> },
         { title: "Email", field: "email" },
         { title: "Admin", field: "admin" },
         { title: "President", field: "president" },
@@ -34,6 +36,19 @@ const Societies = (props) => {
 
         if (noError) { //no error
             dispatch(updateSociety(oldData._id, newData))
+            if(newData.username !== oldData.username){
+                console.log(newData, oldData)
+                dispatch(deleteUserRoles(oldData.admin, {
+                    role: `${oldData.username} Admin`
+                }))
+                dispatch(deleteUserRoles(oldData.president, {
+                    role: `${oldData.username} President`
+                }))
+                dispatch(deleteUserRoles(oldData.vicePresident, {
+                    role: `${oldData.username} vicePresident`
+                }))
+            }
+
             dispatch(updateUserRoles(newData.admin, {
                 role: `${newData.username} Admin`,
                 oldUsername: oldData.admin

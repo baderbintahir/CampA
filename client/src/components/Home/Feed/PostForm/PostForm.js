@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import './PostForm.css'
 import User from '../../../User/User.js'
 import { createPost, updatePost } from '../../../../actions/posts.js'
+import { getSocieties } from '../../../../actions/societies.js'
 import { isAdmin } from '../../../../privileges.js'
 
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import Filter from './Filter/Filter.js'
 
 const PostForm = ({ currentId, setCurrentId }) => {
     const user = JSON.parse(localStorage.getItem('profile'))
@@ -16,14 +18,18 @@ const PostForm = ({ currentId, setCurrentId }) => {
         user_id: user.result._id,
         user_name: user.result.name,
         message: '',
-        selectedFile: ''
+        selectedFile: '',
+        filter: ''
     })
     const post = useSelector((state) => currentId ? state.posts.find((post) => post._id === currentId) : null)
     const dispatch = useDispatch()
 
     useEffect(() => {
         if (post) setPostData(post)
-    }, [post])
+        dispatch(getSocieties())
+    }, [post, dispatch])
+
+    let societies = useSelector((state) => state.societies)
 
     const clear = () => {
         setCurrentId(0)
@@ -31,7 +37,8 @@ const PostForm = ({ currentId, setCurrentId }) => {
             user_id: user.result._id,
             user_name: user.result.name,
             message: '',
-            selectedFile: ''
+            selectedFile: '',
+            filter: ''
         })
 
     }
@@ -60,7 +67,11 @@ const PostForm = ({ currentId, setCurrentId }) => {
             <div className="post__form-wrapper feed-box">
                 <div className="post__form-top">
                     <User username={user.result.name} />
-                    <span>Filter</span>
+                    <Filter
+                        postData={postData}
+                        setPostData={setPostData}
+                        societies={societies}
+                    />
                 </div>
 
                 <div className="post__form-textarea">
