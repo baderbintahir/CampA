@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import './Posts.css'
 import Post from './Post/Post.js'
 
-import { isSupport } from '../../../../privileges.js'
+import { isAdmin } from '../../../../privileges.js'
 
 const Posts = ({ setCurrentId }) => {
     const posts = useSelector((state) => state.posts)
@@ -21,7 +21,7 @@ const Posts = ({ setCurrentId }) => {
                 {
                     posts.slice(0).reverse().map(post => {
                         if (post.filter) {
-                            if (user.result.roles.includes(`${post.filter} vicePresident`) || user.result.roles.includes(`${post.filter} President`) || user.result.roles.includes(`${post.filter} Admin`) || user.result.roles.includes(`${post.filter} Member`) || isSupport()) {
+                            if (user.result.roles.includes(`${post.filter} vicePresident`) || user.result.roles.includes(`${post.filter} President`) || user.result.roles.includes(`${post.filter} Admin`) || user.result.roles.includes(`${post.filter} Member`) || isAdmin()) {
                                 return (
                                     <div key={post._id}>
                                         <Post post={post} setCurrentId={setCurrentId} />

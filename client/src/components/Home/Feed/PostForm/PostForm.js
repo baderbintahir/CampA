@@ -58,7 +58,15 @@ const PostForm = ({ currentId, setCurrentId }) => {
 
     }
 
-    if (!isAdmin()) {
+    let canPost = false
+
+    user.result.roles.forEach(role => {
+        if(role.substring(role.length-5) === "Admin"){
+            canPost = true;
+        }
+    });
+
+    if (!(canPost || isAdmin())) {
         return null
     }
 
