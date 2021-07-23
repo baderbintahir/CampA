@@ -72,6 +72,11 @@ const NavOptions = () => {
                             >
                                 <ListItemText primary="Societies" />
                             </MenuItem>
+                            <MenuItem
+                                onClick={navigationHandleClick}
+                            >
+                                <ListItemText primary="Change Password" />
+                            </MenuItem>
                         </div>
                     ) : null
                 }
