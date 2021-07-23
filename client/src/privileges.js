@@ -1,5 +1,6 @@
+const user = JSON.parse(localStorage.getItem('profile'))
+
 export const isAdmin = () => {
-    const user = JSON.parse(localStorage.getItem('profile'))
 
     if (user.result.roles.includes("Support") || user.result.roles.includes("Admin")) {
         return true
@@ -9,7 +10,6 @@ export const isAdmin = () => {
 }
 
 export const isSupport = () => {
-    const user = JSON.parse(localStorage.getItem('profile'))
 
     if (user.result.roles.includes("Support")) {
         return true
