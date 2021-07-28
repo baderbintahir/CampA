@@ -1,7 +1,6 @@
 import React from 'react'
 import { useHistory } from "react-router-dom";
 import { IconButton } from '@material-ui/core'
-import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive'
 import User from '../User/User.js'
 import NavOptions from './NavOptions/NavOptions.js'
 import './Nav.css'
@@ -27,10 +26,6 @@ const Nav = () => {
 
             <div className="nav-right">
                 <User username={user.result.name} />
-
-                <IconButton>
-                    <NotificationsActiveIcon />
-                </IconButton>
 
                 <IconButton>
                     <NavOptions />

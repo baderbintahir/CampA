@@ -25,11 +25,12 @@ const Login = () => {
     return (
         <form className="login-form" onSubmit={handleSubmit} >
             <div className="login-box">
-                <h2>Log In</h2>
-                <input type="text" name="username" id="username" placeholder="Username" onChange={handleChange} />
-                <input type="password" name="password" id="password" placeholder="Password" onChange={handleChange} />                
+                <div className="dim-bg"></div>
+                <h2>CampA</h2>
+                <input className="input-field" type="text" name="username" id="username" placeholder="Username" onChange={handleChange} />
+                <input className="input-field" type="password" name="password" id="password" placeholder="Password" onChange={handleChange} />                
                     
-                <button type="submit">Log In</button>
+                <button className="submit-btn" type="submit">Log In</button>
             </div>
         </form>
     )

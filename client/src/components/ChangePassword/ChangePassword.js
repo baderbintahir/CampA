@@ -51,11 +51,11 @@ const ChangePassword = () => {
 
                     <p className="error-message">{errorMessage}</p>
 
-                    <input className="custom-field" type="password" name="prevPassword" id="prev-password" placeholder="Old Password" onChange={handleChange} value={formData.prevPassword} />
-                    <input className="custom-field" type="password" name="newPassword" id="new-password" placeholder="New Password" onChange={handleChange} value={formData.newPassword} />
-                    <input className="custom-field" type="password" name="confirmPassword" id="confirm-password" placeholder="Confirm New Password" onChange={handleChange} value={formData.confirmPassword} />
+                    <input className="input-field" type="password" name="prevPassword" id="prev-password" placeholder="Old Password" onChange={handleChange} value={formData.prevPassword} />
+                    <input className="input-field" type="password" name="newPassword" id="new-password" placeholder="New Password" onChange={handleChange} value={formData.newPassword} />
+                    <input className="input-field" type="password" name="confirmPassword" id="confirm-password" placeholder="Confirm New Password" onChange={handleChange} value={formData.confirmPassword} />
 
-                    <input className="change-password__submit-btn" type="submit" name="submit" placeholder="Submit" />
+                    <input className="change-password__submit-btn submit-btn" type="submit" name="submit" placeholder="Submit" />
                 </div>
             </form>
         </div>
