@@ -1,4 +1,6 @@
-.feed-wrapper {
-    width: 60%;
-    margin: 5% auto auto;
+@media (min-width:1025px) {
+    .feed-wrapper{
+        width: 60%;
+        margin: 5% auto;
+    }
 }

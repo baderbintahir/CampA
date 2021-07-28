@@ -9,6 +9,8 @@ import Societies from './components/Societies/Societies.js'
 import Society from './components/Society/Society.js'
 import ChangePassword from './components/ChangePassword/ChangePassword.js'
 
+import './index.css'
+
 const App = () => {
 
     return (
