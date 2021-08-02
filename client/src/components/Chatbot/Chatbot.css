@@ -5,5 +5,11 @@
     bottom: 0;
     border: 1px solid black;
     border-radius: 3px;
-    /* display: none; */
+    display: none;
+}
+
+@media (min-width:1025px) {
+    .chatbot{
+        display: block;
+    }
 }
