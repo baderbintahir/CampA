@@ -16,11 +16,11 @@ class MessageParser {
             ["happy", "amazing", "fantastic", "cool", "fine"],
             ["bad", "bored", "tired", "sad"],
             ["thanks", "thank you"],
-            ["how many societies"],
-            ["list all societies", "names of all societies"],
-            ["list admins of all societies", "names of admins of all societies"],
-            ["list presidents of all societies", "names of presidents of all societies"],
-            ["list vice presidents of all societies", "names of vice presidents of all societies"],
+            ["how many soc"],
+            ["list all soc", "names of all soc", "name of all soc", "name all soc"],
+            ["admins of all soc", "admin of all soc"],
+            ["presidents of all soc"],
+            ["vice presidents of all soc"],
             ["bye", "good bye", "goodbye"]
         ];
     
@@ -38,8 +38,23 @@ class MessageParser {
             [`Names of vice presidents of all societies are ${this.info.societies.map(society => ` ${society.username}: ${society.vicePresident}`)}`],
             ["Goodbye, it was a nice talk"]
         ];
+
+        this.info.societies.forEach(society => {
+            trigger.push([`admin of ${society.username.toLowerCase()}`])
+            reply.push([`Admin of ${society.username} is ${society.admin}`])
+
+            trigger.push([`vice president of ${society.username.toLowerCase()}`])
+            reply.push([`Vice president of ${society.username} is ${society.vicePresident}`])
+
+            trigger.push([`president of ${society.username.toLowerCase()}`])
+            reply.push([`President of ${society.username} is ${society.president}`])
+        });
     
-        // const alternative = ["Same", "Go on...", "Try again please?", "I'm listening..."];
+        const alternatives = [
+            "I'm not able to answer this!",
+            "Sorry I couldn't understand this!",
+            "What are you trying to say?",
+        ];
 
         let item;
         let items;
@@ -53,6 +68,11 @@ class MessageParser {
                     return
                 }
             }
+        }
+
+        if(!item){
+            item = alternatives[Math.floor(Math.random() * alternatives.length)]
+            this.actionProvider.sendMessage(item);
         }
 
         // if (lowerCaseMessage.includes("javascript")) {
